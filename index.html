@@ -8,281 +8,62 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Ficha SKBC Infantil">
-  <link rel="apple-touch-icon" href="https://akapi80.github.io/ficha-skbc-infantil/logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
   <title>Ficha Infantil SKBC</title>
+  <script>
+    const target = `https://skbc.vercel.app/ficha-legacy${window.location.search || ""}`;
+    window.location.replace(target);
+  </script>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
-      color: #e2e8f0; min-height:100vh;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:20px; line-height:1.6;
+      align-items: center;
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      justify-content: center;
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      text-align: center;
     }
-    .container {
-      max-width:500px; width:100%;
-      background:rgba(17,24,39,0.8); backdrop-filter:blur(10px);
-      border-radius:20px; padding:40px 30px;
-      box-shadow:0 20px 60px rgba(0,0,0,0.5);
-      border:1px solid rgba(59,130,246,0.2);
+    main {
+      display: grid;
+      gap: 16px;
+      max-width: 420px;
     }
-    .logo { text-align:center; margin-bottom:30px; }
-    .logo-icon {
-      width:90px; height:90px; border-radius:50%;
-      border:3px solid rgba(59,130,246,0.5);
-      display:block; margin:0 auto 20px;
-      object-fit:cover; background:white; padding:4px;
-      box-shadow:0 10px 30px rgba(37,99,235,0.3);
+    img {
+      background: #fff;
+      border-radius: 999px;
+      height: 96px;
+      margin: 0 auto;
+      object-fit: contain;
+      padding: 6px;
+      width: 96px;
     }
-    h1 { font-size:26px; font-weight:700; text-align:center; margin-bottom:10px; color:#fff; }
-    .subtitle { text-align:center; color:#cbd5e1; font-size:14px; margin-bottom:25px; }
-    .alumno-info {
-      background:rgba(30,41,59,0.6); border-left:4px solid #3b82f6;
-      padding:15px; border-radius:8px; margin-bottom:30px; text-align:center;
+    h1 { font-size: 26px; margin: 0; }
+    p { color: #94a3b8; margin: 0; }
+    a {
+      background: #2563eb;
+      border-radius: 10px;
+      color: #fff;
+      display: inline-block;
+      font-weight: 800;
+      padding: 14px 18px;
+      text-decoration: none;
     }
-    .alumno-info .nombre { font-size:18px; font-weight:600; color:#fff; margin-bottom:5px; }
-    .alumno-info .clase  { font-size:12px; color:#94a3b8; }
-    .alumno-info .padre-label { font-size:11px; color:#64748b; margin-top:6px; }
-    .device-section { display:none; animation:fadeIn 0.4s ease-in; }
-    .device-section.active { display:block; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    .btn-instalar {
-      width:100%; padding:16px;
-      background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);
-      color:white; border:none; border-radius:12px;
-      font-size:16px; font-weight:600; cursor:pointer;
-      transition:all 0.3s; box-shadow:0 10px 25px rgba(37,99,235,0.3);
-      text-transform:uppercase; letter-spacing:0.5px; margin-bottom:15px;
-    }
-    .btn-instalar:hover  { transform:translateY(-2px); box-shadow:0 15px 35px rgba(37,99,235,0.4); }
-    .btn-instalar:active { transform:translateY(0); }
-    .btn-abrir {
-      width:100%; padding:14px; background:rgba(255,255,255,0.1); color:#93c5fd;
-      border:1px solid #3b82f6; border-radius:12px; font-size:14px; font-weight:500;
-      cursor:pointer; transition:all 0.3s; text-decoration:none;
-      display:inline-block; text-align:center;
-    }
-    .btn-abrir:hover { background:rgba(59,130,246,0.2); }
-    .ios-steps { display:flex; flex-direction:column; gap:16px; }
-    .step {
-      background:rgba(30,41,59,0.6); border-radius:12px;
-      padding:16px; border-left:4px solid #3b82f6;
-    }
-    .step-number {
-      display:inline-flex; align-items:center; justify-content:center;
-      width:28px; height:28px;
-      background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);
-      color:white; border-radius:50%; font-weight:700; font-size:14px; margin-bottom:8px;
-    }
-    .step-title { font-size:15px; font-weight:600; color:#fff; margin-bottom:6px; }
-    .step-desc  { font-size:13px; color:#cbd5e1; line-height:1.5; }
-    .warning {
-      background:rgba(245,158,11,0.1); border-left:4px solid #f59e0b;
-      padding:14px; border-radius:8px; margin-top:16px; font-size:13px; color:#fef3c7;
-    }
-    .warning-purple {
-      background:rgba(168,85,247,0.1); border-left:4px solid #a855f7;
-      padding:14px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#e9d5ff;
-    }
-    .info {
-      background:rgba(59,130,246,0.1); border-left:4px solid #3b82f6;
-      padding:14px; border-radius:8px; margin-top:16px; font-size:13px; color:#93c5fd;
-    }
-    .device-badge {
-      display:inline-block; padding:4px 12px;
-      background:rgba(59,130,246,0.2); border:1px solid #3b82f6;
-      border-radius:20px; font-size:11px; font-weight:600; color:#93c5fd;
-      margin-bottom:20px; text-transform:uppercase; letter-spacing:0.5px;
-    }
-    .footer {
-      text-align:center; margin-top:30px; padding-top:20px;
-      border-top:1px solid rgba(255,255,255,0.1); font-size:12px; color:#64748b;
-    }
-    @media (max-width:480px) { .container{padding:30px 20px} h1{font-size:22px} }
   </style>
 </head>
 <body>
-  <div class="container">
-
-    <div class="logo">
-      <img class="logo-icon" src="https://akapi80.github.io/ficha-skbc-infantil/logo.png" alt="SKBC Logo">
-      <h1>Ficha Infantil SKBC</h1>
-      <p class="subtitle">Seguimiento personalizado de vuestro hijo/a en el dojo</p>
-    </div>
-
-    <div class="alumno-info">
-      <div class="nombre" id="nombre-alumno">Cargando...</div>
-      <div class="clase"  id="clase-alumno"></div>
-      <div class="padre-label">👨‍👩‍👧 Acceso familiar</div>
-    </div>
-
-    <!-- SECCIÓN ANDROID -->
-    <div id="android-section" class="device-section">
-      <span class="device-badge">Android</span>
-      <button class="btn-instalar" id="install-btn" onclick="solicitarInstalacion()">
-        📥 Instalar como aplicación
-      </button>
-      <div id="android-fallback" style="display:none; margin-top:20px;">
-        <div class="warning-purple">
-          ⚠️ Si el botón anterior no funcionó, instala manualmente:
-        </div>
-        <div class="ios-steps">
-          <div class="step"><div class="step-number">1</div>
-            <div class="step-title">🔗 Abre la ficha</div>
-            <div class="step-desc">Toca el botón de abajo para abrir la ficha en Chrome</div></div>
-          <div class="step"><div class="step-number">2</div>
-            <div class="step-title">⋮ Menú del navegador</div>
-            <div class="step-desc">Toca los 3 puntitos (⋮) arriba a la derecha en Chrome</div></div>
-          <div class="step"><div class="step-number">3</div>
-            <div class="step-title">📌 Instalar app</div>
-            <div class="step-desc">Busca "Instalar aplicación" o "Añadir a pantalla de inicio" y tócala</div></div>
-          <div class="step"><div class="step-number">4</div>
-            <div class="step-title">✅ Confirma</div>
-            <div class="step-desc">Verifica el nombre y toca "Instalar". ¡Listo! El icono del club aparecerá en tu pantalla.</div></div>
-        </div>
-      </div>
-      <a id="btn-abrir-android" href="#" target="_blank" class="btn-abrir" style="margin-top:15px;display:block;">
-        🔗 O abre la ficha directamente
-      </a>
-      <div class="info">
-        ℹ️ Al instalar verás el icono del club en tu pantalla de inicio. Podrás consultar la ficha de tu hijo/a en cualquier momento.
-      </div>
-    </div>
-
-    <!-- SECCIÓN iOS -->
-    <div id="ios-section" class="device-section">
-      <span class="device-badge">iPhone / iPad</span>
-      <div class="warning" style="margin-bottom:20px;">
-        ⚠️ En iPhone/iPad solo funciona desde <strong>Safari</strong>.<br>
-        Si estás en otro navegador, copia la URL y ábrela en Safari primero.
-      </div>
-      <div class="ios-steps">
-        <div class="step"><div class="step-number">1</div>
-          <div class="step-title">🌐 Abre esta página en Safari</div>
-          <div class="step-desc">Asegúrate de usar Safari. En Chrome u otro navegador la instalación no está disponible en iPhone/iPad.</div></div>
-        <div class="step"><div class="step-number">2</div>
-          <div class="step-title">📤 Toca el botón Compartir</div>
-          <div class="step-desc">Toca el icono de flecha saliendo de un cuadro (□↑), normalmente en la barra inferior de Safari.</div></div>
-        <div class="step"><div class="step-number">3</div>
-          <div class="step-title">⬇️ Desplázate y busca la opción</div>
-          <div class="step-desc">Desliza el menú hacia abajo hasta ver "Añadir a pantalla de inicio".</div></div>
-        <div class="step"><div class="step-number">4</div>
-          <div class="step-title">✅ Confirma y listo</div>
-          <div class="step-desc">Verifica el nombre "Ficha SKBC Infantil" y pulsa "Añadir". ¡El icono del club aparecerá en tu pantalla!</div></div>
-      </div>
-      <a id="btn-abrir-ios" href="#" target="_blank" class="btn-abrir" style="margin-top:20px;display:block;">
-        🔗 Abrir la ficha ahora
-      </a>
-      <div class="info">
-        ℹ️ Una vez instalada podrás consultar la ficha de tu hijo/a desde el icono del club, sin necesidad de recordar ningún enlace.
-      </div>
-    </div>
-
-    <div class="footer">
-      SKBC Gipuzkoa · Acceso familiar seguro<br>
-      <span id="anio"></span> © Todos los derechos reservados
-    </div>
-  </div>
-
+  <main>
+    <img src="logo.png" alt="SKBC">
+    <h1>Abriendo ficha infantil</h1>
+    <p>Estamos cargando la ficha nueva con el mismo enlace de siempre.</p>
+    <a id="fallback" href="https://skbc.vercel.app/alumnos">Abrir ficha</a>
+  </main>
   <script>
-    const FICHA_URL = 'https://script.google.com/macros/s/AKfycbws751yevMI7oOlb-qCzDaSeVcazMjV1GOqC6D2PqAprKNG5VmBIWZzcqoVfqbF0oNwfw/exec';
-
-    // Año en el footer
-    document.getElementById('anio').textContent = new Date().getFullYear();
-
-    // Leer parámetros de la URL
-    const params = new URLSearchParams(window.location.search);
-    const id     = params.get('id')    || '';
-    const token  = params.get('token') || '';
-    const nombre = params.get('nombre') || '';
-    const clase  = params.get('clase')  || '';
-
-    // Mostrar nombre y clase
-    document.getElementById('nombre-alumno').textContent = nombre || 'Alumno/a';
-    document.getElementById('clase-alumno').textContent  = clase  || '';
-
-    // Construir URL de la ficha
-    const fichaUrl = FICHA_URL + '?id=' + encodeURIComponent(id) + '&token=' + encodeURIComponent(token);
-
-    // Asignar href a los botones de abrir
-    document.getElementById('btn-abrir-android').href = fichaUrl;
-    document.getElementById('btn-abrir-ios').href     = fichaUrl;
-
-    // Manifest PWA dinámico
-    const manifestData = {
-      name: 'Ficha SKBC - ' + (nombre || 'Infantil'),
-      short_name: 'Ficha SKBC',
-      start_url: fichaUrl,
-      display: 'standalone',
-      background_color: '#ffffff',
-      theme_color: '#0f172a',
-      icons: [
-        { src: 'https://akapi80.github.io/ficha-skbc-infantil/logo.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-        { src: 'https://akapi80.github.io/ficha-skbc-infantil/logo.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-      ]
-    };
-    const mBlob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
-    const mLink = document.createElement('link');
-    mLink.rel   = 'manifest';
-    mLink.href  = URL.createObjectURL(mBlob);
-    document.head.appendChild(mLink);
-
-    // Service Worker
-    if ('serviceWorker' in navigator) {
-      try {
-        const swCode = "self.addEventListener('install',e=>{e.waitUntil(self.skipWaiting())});self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});self.addEventListener('fetch',e=>{});";
-        const swBlob = new Blob([swCode], {type:'application/javascript'});
-        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
-      } catch(e) {}
-    }
-
-    // Detección de dispositivo
-    function detectarDispositivo() {
-      const ua = navigator.userAgent.toLowerCase();
-      if (/android/.test(ua)) return 'android';
-      if (/iphone|ipad|ipod/.test(ua)) return 'ios';
-      return 'desktop';
-    }
-
-    function mostrarSeccionDispositivo() {
-      const device = detectarDispositivo();
-      if (device === 'ios') {
-        document.getElementById('ios-section').classList.add('active');
-      } else {
-        document.getElementById('android-section').classList.add('active');
-      }
-    }
-
-    // Instalación Android
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      window.deferredPrompt = e;
-    });
-
-    async function solicitarInstalacion() {
-      const fallback = document.getElementById('android-fallback');
-      if (window.deferredPrompt) {
-        window.deferredPrompt.prompt();
-        const { outcome } = await window.deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          window.deferredPrompt = null;
-          alert('✅ Ficha instalada. Busca el icono del club en tu pantalla de inicio.');
-        } else {
-          fallback.style.display = 'block';
-        }
-      } else {
-        fallback.style.display = 'block';
-      }
-    }
-
-    setTimeout(() => {
-      if (!window.deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
-        const btn = document.getElementById('install-btn');
-        if (btn) btn.style.display = 'block';
-      }
-    }, 4000);
-
-    mostrarSeccionDispositivo();
+    document.getElementById("fallback").href = target;
   </script>
 </body>
 </html>
